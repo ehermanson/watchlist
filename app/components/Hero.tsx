@@ -10,6 +10,8 @@ interface HeroProps {
   overview: string;
   studioLogo: string;
   seasons?: any[];
+  onList: boolean;
+  id: string;
 }
 
 export const Hero = ({
@@ -21,6 +23,8 @@ export const Hero = ({
   overview,
   studioLogo,
   seasons,
+  onList,
+  id,
 }: HeroProps) => {
   return (
     <Box
@@ -46,12 +50,32 @@ export const Hero = ({
           padding: "50px",
         }}
       >
-        <Form method="post">
-          <input type="hidden" name="watched" value={String(watched)} />
-          <Button css={{ position: "absolute", top: 10, right: 10 }}>
-            {watched ? "Mark as not watched" : "Mark as Watched"}
-          </Button>
-        </Form>
+        <Box
+          css={{
+            position: "absolute",
+            top: 20,
+            right: 20,
+            display: "flex",
+            gap: "$2",
+          }}
+        >
+          {!onList ? (
+            <Form method="post">
+              <input type="hidden" name="id" value={id} />
+              <input type="hidden" name="title" value={title} />
+              <input type="hidden" name="_action" value="add" />
+              <Button>Add to my list</Button>
+            </Form>
+          ) : (
+            <Form method="post">
+              <input type="hidden" name="watched" value={String(watched)} />
+              <input type="hidden" name="_action" value="toggleWatched" />
+              <Button>
+                {watched ? "Mark as not watched" : "Mark as Watched"}
+              </Button>
+            </Form>
+          )}
+        </Box>
         <Box
           css={{
             display: "grid",
@@ -63,6 +87,8 @@ export const Hero = ({
           <Box
             as="img"
             src={poster}
+            height={600}
+            width={400}
             css={{
               borderRadius: 10,
               boxShadow: "1px 2px 5px rgba(0,0,0,.5)",

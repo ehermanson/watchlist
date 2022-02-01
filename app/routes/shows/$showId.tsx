@@ -2,7 +2,7 @@ import type { LoaderFunction, ActionFunction, MetaFunction } from "remix";
 import { useLoaderData, useCatch } from "remix";
 import { useParams } from "react-router-dom";
 import { supabaseClient, getUserId } from "~/lib/supabase.server";
-import { Hero, Box, CastList } from "~/components";
+import { Hero, Box, CastList, MediaCarousel } from "~/components";
 import { tmdbClient } from "~/lib/moviedb-api";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -32,17 +32,32 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export const action: ActionFunction = async ({ request, params }) => {
   const userId = await getUserId(request);
   const formData = await request.formData();
-  const { watched } = Object.fromEntries(formData);
+  const { _action, ...values } = Object.fromEntries(formData);
 
-  const { data, error } = await supabaseClient
-    .from("shows")
-    .update({
-      watched: watched === "false" ? true : false,
-      lastUpdated: new Date().toISOString(),
-    })
-    .match({ mediaId: params.showId, createdBy: userId });
+  switch (_action) {
+    case "add": {
+      const { data, error } = await supabaseClient
+        .from("shows")
+        .insert([
+          { mediaId: values.id, createdBy: userId, title: values.title },
+        ])
+        .single();
 
-  return { data, error };
+      return { data, error };
+    }
+
+    case "toggleWatched": {
+      const { data, error } = await supabaseClient
+        .from("shows")
+        .update({
+          watched: values.watched === "false" ? true : false,
+          lastUpdated: new Date().toISOString(),
+        })
+        .match({ mediaId: params.showId, createdBy: userId });
+
+      return { data, error };
+    }
+  }
 };
 
 export default function ShowDetail() {
@@ -53,12 +68,12 @@ export default function ShowDetail() {
     size: "w1280",
   });
 
-  console.log(show.credits);
-
   return (
     <>
       <Hero
+        id={show.id}
         title={show.name}
+        onList={data.length > 0}
         backdrop={backdrop}
         watched={data[0]?.watched}
         poster={tmdbClient.getImage({ id: show.poster_path, size: "w400" })}
@@ -79,12 +94,17 @@ export default function ShowDetail() {
             <CastList castMembers={show.credits.cast} />
           </Box>
         )}
-        <h2>Recommendations</h2>
-        <ul>
-          {show.recommendations.results.map((s) => {
-            return <li key={s.id}>{s.name}</li>;
-          })}
-        </ul>
+        {show.recommendations.results.length > 0 && (
+          <Box css={{ mb: "$10" }}>
+            <Box as="h2" css={{ mb: "$4" }}>
+              Recommendations
+            </Box>
+            <MediaCarousel
+              items={show.recommendations.results}
+              mediaType="shows"
+            />
+          </Box>
+        )}
       </Box>
     </>
   );

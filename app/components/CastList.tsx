@@ -1,4 +1,4 @@
-import { Box } from ".";
+import { Carousel, Card } from ".";
 import { tmdbClient } from "~/lib/moviedb-api";
 interface CastMember {
   profile_path: string;
@@ -12,18 +12,7 @@ interface CastListProps {
 
 export const CastList = ({ castMembers }: CastListProps) => {
   return (
-    <Box
-      as="ul"
-      css={{
-        margin: 0,
-        padding: 0,
-        gap: "$2",
-        overflowX: "scroll",
-        scrollSnapType: "x mandatory",
-        display: "flex",
-        ["-webkit-overflow-scrolling"]: "touch",
-      }}
-    >
+    <Carousel>
       {castMembers.map((member) => {
         if (member.profile_path === null) {
           // you are a nobody
@@ -31,46 +20,18 @@ export const CastList = ({ castMembers }: CastListProps) => {
         }
 
         return (
-          <Box
-            key={member.id}
+          <Card
             as="li"
-            css={{
-              padding: "$1",
-              background: "$gray4",
-              textAlign: "center",
-              display: "inline-flex",
-              flexDirection: "column",
-              borderRadius: 10,
-              overflow: "hidden",
-              minWidth: 175,
-              boxShadow: ".5rem 1rem 3rem #000",
-              scrollSnapAlign: "start",
-            }}
-          >
-            <Box
-              as="img"
-              css={{
-                borderRadius: 8,
-              }}
-              src={tmdbClient.getImage({
-                id: member.profile_path,
-                size: "w200",
-              })}
-            />
-            <Box
-              css={{
-                p: "$1",
-                flexGrow: 2,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {member.name}
-            </Box>
-          </Box>
+            key={member.id}
+            css={{ scrollSnapAlign: "start", minWidth: 175 }}
+            title={member.name}
+            imageSrc={tmdbClient.getImage({
+              id: member.profile_path,
+              size: "w200",
+            })}
+          />
         );
       })}
-    </Box>
+    </Carousel>
   );
 };
