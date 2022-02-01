@@ -51,7 +51,7 @@ export let action: ActionFunction = async ({ request }) => {
       const { data, error } = await supabaseClient
         .from("shows")
         .delete()
-        .match({ id: values.id });
+        .match({ id: values.id, createdBy: userId });
 
       return { data, error };
     }
@@ -69,7 +69,7 @@ export let action: ActionFunction = async ({ request }) => {
           watched: watched === "true" ? false : true,
           lastUpdated: new Date().toISOString(),
         })
-        .match({ id });
+        .match({ id, createdBy: userId });
 
       return { data, error };
     }
@@ -93,8 +93,6 @@ export default function Shows() {
   const { shows } = useLoaderData();
   const submit = useSubmit();
   const search = useFetcher();
-
-  console.log(search);
 
   function handleChange(event: React.FormEvent<HTMLFormElement>) {
     submit(event.currentTarget, { replace: true });

@@ -51,7 +51,7 @@ export let action: ActionFunction = async ({ request }) => {
       const { data, error } = await supabaseClient
         .from("movies")
         .delete()
-        .match({ id: values.id });
+        .match({ id: values.id, createdBy: userId });
 
       return { data, error };
     }
@@ -69,7 +69,7 @@ export let action: ActionFunction = async ({ request }) => {
           watched: watched === "true" ? false : true,
           lastUpdated: new Date().toISOString(),
         })
-        .match({ id });
+        .match({ id, createdBy: userId });
 
       return { data, error };
     }

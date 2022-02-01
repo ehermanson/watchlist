@@ -1,12 +1,13 @@
 import type { LoaderFunction, ActionFunction } from "remix";
 import { useLoaderData, useCatch } from "remix";
 import { useParams } from "react-router-dom";
-import { supabaseClient } from "~/lib/supabase.server";
+import { supabaseClient, getUserId } from "~/lib/supabase.server";
 import { Box, Hero, CastList } from "~/components";
 import { tmdbClient } from "~/lib/moviedb-api";
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
   const { movieId } = params;
+  const userId = await getUserId(request);
 
   if (typeof movieId !== "string") {
     return { error: `Something went wrong.` };
@@ -23,12 +24,13 @@ export const loader: LoaderFunction = async ({ params }) => {
       lastUpdated
       )`
     )
-    .eq("mediaId", movieId);
+    .match({ mediaId: movieId, createdBy: userId });
 
   return { data, movie, error };
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
+  const userId = await getUserId(request);
   const formData = await request.formData();
   const { watched } = Object.fromEntries(formData);
 
@@ -38,7 +40,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       watched: watched === "false" ? true : false,
       lastUpdated: new Date().toISOString(),
     })
-    .match({ mediaId: params.movieId });
+    .match({ mediaId: params.movieId, createdBy: userId });
 
   return { data, error };
 };
