@@ -1,4 +1,4 @@
-import { redirect, Link, LoaderFunction, useLoaderData } from "remix";
+import { Link, LoaderFunction, useLoaderData } from "remix";
 import { getUserId } from "~/lib/supabase.server";
 import { Box } from "~/components";
 
@@ -14,7 +14,7 @@ export default function Index() {
   const loaderData = useLoaderData();
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <Box css={{ textAlign: "center", p: "$5" }}>
       {loaderData.isLoggedIn ? (
         <>
           <h1>Welcome back.</h1>
@@ -32,6 +32,6 @@ export default function Index() {
           </Box>
         </>
       )}
-    </div>
+    </Box>
   );
 }

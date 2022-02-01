@@ -37,11 +37,12 @@ export const Hero = ({
       <Box
         css={{
           background: `linear-gradient(
-          to bottom right,
-          rgba(0, 0, 0, .8) 100px,
-          rgba(0, 0, 0, 0.7) 100%
-          )
-        `,
+            to bottom right,
+            rgba(0, 0, 0, .8) 100px,
+            rgba(0, 0, 0, 0.7) 100%
+            )
+          `,
+
           padding: "50px",
         }}
       >

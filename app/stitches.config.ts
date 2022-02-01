@@ -94,6 +94,14 @@ globalCss({
     fontFamily: "$body",
     lineHeight: 1.5,
     minHeight: "calc(100vh - env(safe-area-inset-bottom))",
+    background: `linear-gradient(
+      145deg,
+      $gray1 0%,
+      $gray4 25%,
+      $gray6 50%,
+      $gray4 75%,
+      $gray1 100%
+    )`,
   },
 
   a: {

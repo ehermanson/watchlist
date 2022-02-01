@@ -78,6 +78,10 @@ function Layout({
           display: "flex",
           justifyContent: "space-between",
           padding: "$6",
+          background: "$gray1",
+          boxShadow: "0 3px 4px rgba(0,0,0,.25)",
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <Link to="/">Watchlist</Link>

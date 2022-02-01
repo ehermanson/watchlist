@@ -25,7 +25,7 @@ export default function SignIn() {
   const actionData = useActionData();
 
   return (
-    <Box css={{ maxWidth: 400, margin: "auto" }}>
+    <Box css={{ maxWidth: 400, margin: "auto", p: "$5" }}>
       <Box as="h1" css={{ textAlign: "center", mb: "$10" }}>
         Sign in to your account
       </Box>
