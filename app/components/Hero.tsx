@@ -8,7 +8,7 @@ interface HeroProps {
   title: string;
   year: string;
   overview: string;
-  studioLogo: string;
+  studioLogo?: string;
   seasons?: any[];
   onList: boolean;
   id: string;
@@ -117,17 +117,19 @@ export const Hero = ({
                 ({year})
               </Box>
             </Box>
-            <Box css={{ mb: "$4" }}>
-              <Box
-                as="img"
-                css={{
-                  padding: "$1",
-                  borderRadius: "2px",
-                  filter: "grayscale(1) invert(1) brightness(200%)",
-                }}
-                src={studioLogo}
-              />
-            </Box>
+            {studioLogo && (
+              <Box css={{ mb: "$4" }}>
+                <Box
+                  as="img"
+                  css={{
+                    padding: "$1",
+                    borderRadius: "2px",
+                    filter: "grayscale(1) invert(1) brightness(200%)",
+                  }}
+                  src={studioLogo}
+                />
+              </Box>
+            )}
             {seasons && (
               <Box css={{ mb: "$4" }}>
                 {seasons.length} {seasons.length > 1 ? "seasons" : "season"}

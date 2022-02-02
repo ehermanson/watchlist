@@ -68,13 +68,9 @@ export default function MovieDetail() {
     size: "w1280",
   });
 
-  const getStudioLogo = () => {
-    const path =
-      movie.production_companies[0].logo_path ??
-      movie.production_companies.find((p) => p.logo_path).logo_path;
-
-    return path;
-  };
+  const studioLogo =
+    movie.production_companies[0]?.logo_path ??
+    movie.production_companies.find((p) => p.logo_path)?.logo_path;
 
   return (
     <>
@@ -87,10 +83,13 @@ export default function MovieDetail() {
         poster={tmdbClient.getImage({ id: movie.poster_path, size: "w400" })}
         year={movie.release_date?.split("-")[0]}
         overview={movie.overview}
-        studioLogo={tmdbClient.getImage({
-          id: getStudioLogo(),
-          size: "h50",
-        })}
+        studioLogo={
+          studioLogo &&
+          tmdbClient.getImage({
+            id: studioLogo,
+            size: "h50",
+          })
+        }
       />
       <Box css={{ p: "$5" }}>
         {movie.credits.cast && (

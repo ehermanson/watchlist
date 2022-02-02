@@ -36,11 +36,11 @@ export const Carousel = ({ children }: MediaCarouselProps) => {
       }}
     >
       {React.Children.map(children, (child) => {
-        return (
+        return React.isValidElement(child) ? (
           <Box as="li" css={{ scrollSnapAlign: "start", listStyle: "none" }}>
             {child}
           </Box>
-        );
+        ) : null;
       })}
     </Box>
   );
