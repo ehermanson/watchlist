@@ -21,9 +21,8 @@ export const CastList = ({ castMembers }: CastListProps) => {
 
         return (
           <Card
-            as="li"
             key={member.id}
-            css={{ scrollSnapAlign: "start", minWidth: 175 }}
+            css={{ minWidth: 175 }}
             title={member.name}
             imageSrc={tmdbClient.getImage({
               id: member.profile_path,

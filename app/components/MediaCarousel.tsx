@@ -1,4 +1,4 @@
-import { Card, Carousel } from ".";
+import { Card, Carousel, Box } from ".";
 import { tmdbClient } from "~/lib/moviedb-api";
 import { Link } from "remix";
 interface MediaItem {
@@ -18,17 +18,21 @@ export const MediaCarousel = ({ items, mediaType }: MediaCarouselProps) => {
     <Carousel>
       {items.map((item) => {
         return (
-          <Link to={`/${mediaType}/${item.id}`} key={item.id}>
+          <Box
+            css={{ textDecoration: "none" }}
+            as={Link}
+            to={`/${mediaType}/${item.id}`}
+            key={item.id}
+          >
             <Card
-              as="li"
+              css={{ minWidth: 400, textDecoration: "none" }}
               title={item.title || item.name || ""}
-              css={{ scrollSnapAlign: "start", minWidth: 400 }}
               imageSrc={tmdbClient.getImage({
                 id: item.backdrop_path,
                 size: "w400",
               })}
             />
-          </Link>
+          </Box>
         );
       })}
     </Carousel>
