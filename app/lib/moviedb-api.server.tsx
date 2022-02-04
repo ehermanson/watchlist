@@ -30,7 +30,7 @@ export default class TmdbClient {
   }
 
   async get({ id, media = "movie" }: GetMedia) {
-    const url = `https://api.themoviedb.org/3/${media}/${id}?api_key=${this.apiKey}&append_to_response=recommendations,credits`;
+    const url = `${this.baseUrl}/${media}/${id}?api_key=${this.apiKey}&append_to_response=recommendations,credits`;
     return fetch(url).then((res) => res.json());
   }
 
@@ -49,12 +49,15 @@ export default class TmdbClient {
     return fetch(url).then((res) => res.json());
   }
 
-  getImage({ id, size }: { id: string; size: string }) {
-    return `https://image.tmdb.org/t/p/${size}${id}`;
+  async getPerson({ id }: { id: string }) {
+    const url = `${this.baseUrl}/person/${id}?api_key=${this.apiKey}&append_to_response=combined_credits`;
+    return fetch(url).then((res) => res.json());
   }
 }
 
+const apiKey = process?.env?.MOVIE_DB_API_KEY as string;
+
 export const tmdbClient = new TmdbClient({
   baseUrl: "https://api.themoviedb.org/3",
-  apiKey: "b40fa92d7307fa0dbe5ffb7ec0f06c17",
+  apiKey,
 });

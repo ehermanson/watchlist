@@ -1,5 +1,5 @@
 import { Card, Carousel, Box } from ".";
-import { tmdbClient } from "~/lib/moviedb-api";
+import { getImage } from "~/lib/get-image";
 import { Link } from "remix";
 interface MediaItem {
   backdrop_path: string;
@@ -27,7 +27,7 @@ export const MediaCarousel = ({ items, mediaType }: MediaCarouselProps) => {
             <Card
               css={{ minWidth: 400, textDecoration: "none" }}
               title={item.title || item.name || ""}
-              imageSrc={tmdbClient.getImage({
+              imageSrc={getImage({
                 id: item.backdrop_path,
                 size: "w400",
               })}

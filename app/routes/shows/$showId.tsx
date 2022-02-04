@@ -1,9 +1,9 @@
-import type { LoaderFunction, ActionFunction, MetaFunction } from "remix";
-import { useLoaderData, useCatch } from "remix";
-import { useParams } from "react-router-dom";
+import type { LoaderFunction, ActionFunction } from "remix";
+import { useLoaderData, useCatch, useParams } from "remix";
 import { supabaseClient, getUserId } from "~/lib/supabase.server";
 import { Hero, Box, CastList, MediaCarousel } from "~/components";
-import { tmdbClient } from "~/lib/moviedb-api";
+import { tmdbClient } from "~/lib/moviedb-api.server";
+import { getImage } from "~/lib/get-image";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const { showId } = params;
@@ -63,7 +63,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function ShowDetail() {
   let { show, data } = useLoaderData();
 
-  const backdrop = tmdbClient.getImage({
+  const backdrop = getImage({
     id: show.backdrop_path,
     size: "w1280",
   });
@@ -76,10 +76,10 @@ export default function ShowDetail() {
         onList={data.length > 0}
         backdrop={backdrop}
         watched={data[0]?.watched}
-        poster={tmdbClient.getImage({ id: show.poster_path, size: "w400" })}
+        poster={getImage({ id: show.poster_path, size: "w400" })}
         year={show.first_air_date?.split("-")[0]}
         overview={show.overview}
-        studioLogo={tmdbClient.getImage({
+        studioLogo={getImage({
           id: show.networks[0].logo_path,
           size: "h50",
         })}

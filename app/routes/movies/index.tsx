@@ -159,7 +159,7 @@ export function CatchBoundary() {
     return (
       <div style={{ textAlign: "center" }}>
         <h1>You must be logged in.</h1>
-        <Link to="/login">Login</Link>
+        <Link to="/sign-in">Sign In</Link>
       </div>
     );
   }

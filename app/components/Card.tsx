@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import { Box } from ".";
 interface CardProps {
-  title: string;
+  title: ReactNode;
   imageSrc: string;
   [prop: string]: any;
 }

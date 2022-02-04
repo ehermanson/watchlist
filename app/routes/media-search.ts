@@ -1,5 +1,6 @@
 import { LoaderFunction } from "remix";
-import { tmdbClient } from "~/lib/moviedb-api";
+import { tmdbClient } from "~/lib/moviedb-api.server";
+import { getImage } from "~/lib/get-image";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -21,7 +22,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       id: result.id,
       overview: result.overview,
       poster: result.poster_path
-        ? tmdbClient.getImage({ id: result.poster_path, size: "w500" })
+        ? getImage({ id: result.poster_path, size: "w500" })
         : null,
       year: release?.split("-")[0],
     };
